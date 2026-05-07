@@ -44,7 +44,13 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 }
 
 export type TokenResponse = { access_token: string; token_type: string };
-export type User = { id: number; email: string };
+export type User = {
+  id: number;
+  email: string;
+  full_name?: string | null;
+  picture_url?: string | null;
+  oauth_provider?: string | null;
+};
 export type Profile = {
   full_name: string | null;
   experience_level: string | null;
@@ -176,6 +182,15 @@ export const api = {
   },
   login(email: string, password: string) {
     return request<TokenResponse>("/auth/login", { method: "POST", body: { email, password } });
+  },
+  googleAuth(idToken: string) {
+    return request<TokenResponse>("/auth/google", { method: "POST", body: { id_token: idToken } });
+  },
+  appleAuth(idToken: string, fullName?: string) {
+    return request<TokenResponse>("/auth/apple", {
+      method: "POST",
+      body: { id_token: idToken, full_name: fullName },
+    });
   },
   me(token: string) {
     return request<User>("/auth/me", { token });

@@ -26,8 +26,20 @@ class LoginRequest(BaseModel):
 class UserResponse(BaseModel):
     id: int
     email: EmailStr
+    full_name: Optional[str] = None
+    picture_url: Optional[str] = None
+    oauth_provider: Optional[str] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class GoogleAuthRequest(BaseModel):
+    id_token: str = Field(min_length=10)
+
+
+class AppleAuthRequest(BaseModel):
+    id_token: str = Field(min_length=10)
+    full_name: Optional[str] = None
 
 
 class ProfilePayload(BaseModel):

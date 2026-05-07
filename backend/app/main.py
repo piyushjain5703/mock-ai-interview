@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from app.api.router import api_router
 from app.core.config import settings
@@ -22,6 +23,27 @@ app.include_router(api_router, prefix="/api/v1")
 @app.on_event("startup")
 def on_startup() -> None:
     Base.metadata.create_all(bind=engine)
+    _apply_lightweight_migrations()
+
+
+def _apply_lightweight_migrations() -> None:
+    """Add columns that postdate the original schema. Idempotent and safe to run on every boot."""
+    statements = [
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS full_name VARCHAR(255)",
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS picture_url VARCHAR(1000)",
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS oauth_provider VARCHAR(30)",
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS oauth_subject VARCHAR(255)",
+        "ALTER TABLE users ALTER COLUMN hashed_password DROP NOT NULL",
+        "CREATE INDEX IF NOT EXISTS ix_users_oauth_provider ON users (oauth_provider)",
+        "CREATE INDEX IF NOT EXISTS ix_users_oauth_subject ON users (oauth_subject)",
+    ]
+    with engine.begin() as conn:
+        for stmt in statements:
+            try:
+                conn.execute(text(stmt))
+            except Exception:  # noqa: BLE001
+                # Non-Postgres backends or already-applied changes; safe to ignore.
+                pass
 
 
 @app.get("/")

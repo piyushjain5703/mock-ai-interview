@@ -11,3 +11,4 @@ email-validator
 pypdf
 python-docx
 google-genai
+google-auth>=2.30.0
