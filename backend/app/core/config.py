@@ -19,6 +19,7 @@ class Settings(BaseSettings):
 
     gemini_api_key: str = ""
     evaluation_model: str = "gemini-2.0-flash"
+    resume_extraction_model: str = "gemini-2.5-flash-lite"
 
     google_client_id: str = ""
     apple_client_id: str = ""

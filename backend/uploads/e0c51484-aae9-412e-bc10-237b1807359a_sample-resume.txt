@@ -1,0 +1,23 @@
+Jane Smith
+Senior Full-Stack Engineer | jane@example.com
+
+Summary
+6 years of experience building consumer-facing web products.
+Specialized in TypeScript, React, and Node.js with a strong focus on performance.
+
+Skills
+TypeScript, React, Next.js, Node.js, Express, PostgreSQL, GraphQL, Redis,
+Docker, Kubernetes, AWS (Lambda, S3, RDS), Terraform, Jest, Cypress
+
+Projects
+- Rebuilt the checkout flow at AcmeShop, reducing cart abandonment by 22% and
+  cutting page load from 4.2s to 1.1s using React Server Components.
+- Designed a GraphQL federation layer unifying 5 microservices for the mobile team.
+- Open-source contributor to vitest; merged 8 PRs improving snapshot diff output.
+
+Experience
+Senior Engineer @ AcmeShop (2022-present)
+Engineer @ Foobar Inc (2019-2022)
+
+Education
+B.S. Computer Science, State University, 2019
